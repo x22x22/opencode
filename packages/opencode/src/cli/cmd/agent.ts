@@ -164,11 +164,12 @@ const AgentCreateCommand = cmd({
           mode = modeResult
         }
 
-        // Build tools config
-        const tools: Record<string, boolean> = {}
+        // Build permission config
+        const permission: Record<string, string> = {}
         for (const tool of AVAILABLE_TOOLS) {
           if (!selectedTools.includes(tool)) {
-            tools[tool] = false
+            // write maps to the edit permission
+            permission[tool === "write" ? "edit" : tool] = "deny"
           }
         }
 
@@ -176,13 +177,13 @@ const AgentCreateCommand = cmd({
         const frontmatter: {
           description: string
           mode: AgentMode
-          tools?: Record<string, boolean>
+          permission?: Record<string, string>
         } = {
           description: generated.whenToUse,
           mode,
         }
-        if (Object.keys(tools).length > 0) {
-          frontmatter.tools = tools
+        if (Object.keys(permission).length > 0) {
+          frontmatter.permission = permission
         }
 
         // Write file

@@ -572,6 +572,7 @@ export namespace Config {
 
   export const Agent = z
     .object({
+      name: z.string().optional().describe("Display name for this agent"),
       model: ModelId.optional(),
       variant: z
         .string()
